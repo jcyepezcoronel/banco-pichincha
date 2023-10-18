@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductService } from './product.service';
 import { HttpClient } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const httpClientMock = {
     get: jest.fn(),
@@ -23,6 +24,7 @@ describe('ProductService', ()=>{
             providers: [
                 ProductService,
                 {provide: HttpClient, useValue: httpClientMock }],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA]
         });
         service = TestBed.inject(ProductService);
         httpClientMock.get.mockReturnValue(productsListMock)
