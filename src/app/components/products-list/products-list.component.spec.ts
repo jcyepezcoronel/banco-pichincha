@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductsListComponent } from './products-list.component';
+import { ProductService } from 'src/app/services/product.service';
 
 describe('ProductsListComponent', () => {
   let component: ProductsListComponent;
   let fixture: ComponentFixture<ProductsListComponent>;
+  let service: ProductService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

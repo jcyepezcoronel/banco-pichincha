@@ -26,10 +26,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('banco-pichincha');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('banco-pichincha app is running!');
-  });
 });

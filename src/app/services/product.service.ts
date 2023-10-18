@@ -25,7 +25,7 @@ export class ProductService {
   getProducts() {
     return this.http.get<IProduct[]>(`${this.BASE_URL}/bp/products`, {
       headers: {
-        'authorId': this.authorId.toString(),
+        'authorId': "2",
       },
     });
   }
