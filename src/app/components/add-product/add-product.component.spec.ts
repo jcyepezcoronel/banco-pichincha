@@ -67,7 +67,7 @@ describe('AddProductComponent', () => {
       id: ['trj-crd'],
       name: ['Tarjetas de credito'],
       description: ['tarjeta de consumo'],
-      logo: ['https://google.com'],
+      logo: ['logo route'],
       date_release: ['2023-02-01'],
       date_revision: ['2024-02-01'],
     });
