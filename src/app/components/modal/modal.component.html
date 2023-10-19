@@ -1,0 +1,13 @@
+<div class="modal-background">
+    <div class="modal-card">
+        <span class="modal-close-button" (click)="closeModal(false)">X</span>
+        <div class="modal-content">
+            <span>Estás seguro de eliminar el producto {{name}}?</span>
+            <hr class="modal-divider">
+            <div class="modal-footer">
+                <button class="btn secundary" (click)="closeModal(false)">Cancelar</button>
+                <button class="btn primary" (click)="closeModal(true)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

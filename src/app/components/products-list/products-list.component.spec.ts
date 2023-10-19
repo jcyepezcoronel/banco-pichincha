@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { ProductsListComponent } from './products-list.component';
 import { ProductService } from 'src/app/services/product.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ProductsListComponent', () => {
   let component: ProductsListComponent;
@@ -11,10 +12,11 @@ describe('ProductsListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProductsListComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, FormsModule],
+      declarations: [ProductsListComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [ProductService],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProductsListComponent);
     component = fixture.componentInstance;
