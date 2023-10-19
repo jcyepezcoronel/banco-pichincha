@@ -33,12 +33,15 @@ describe('ProductService', () => {
     httpClientMock.get.mockReturnValue(productsListMock);
   });
 
+  //   Verificacion de la lista de producto
+
   it('getProducts return ProductsList', () => {
     service.getProducts();
 
     expect(httpClientMock.get).toHaveBeenCalled();
   });
 
+  //   Valida que el servicio haya sido creado
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

@@ -22,10 +22,13 @@ describe('AddProductComponent', () => {
     formBuilder = fixture.debugElement.injector.get(FormBuilder);
     fixture.detectChanges();
   });
+  // Esperar que el componente este creado
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // valida que los datos iniciales en el formulario sean correctos
 
   it('should initialize the form with the correct initial values', () => {
     const form = formBuilder.group({
@@ -45,6 +48,7 @@ describe('AddProductComponent', () => {
     expect(component.registerForm.get('date_revision')!.value).toBe('');
   });
 
+  // Valida que el boton haya sido tocado
   it('should validate the form when the submit button is clicked', () => {
     const form = formBuilder.group({
       id: [''],
@@ -62,6 +66,7 @@ describe('AddProductComponent', () => {
     expect(component.registerForm.invalid).toBe(true);
   });
 
+  // Valida que el formulario sea ralmente valido
   it('should set the form as valid when all fields are valid', () => {
     const form = formBuilder.group({
       id: ['trj-crd'],

@@ -22,7 +22,7 @@ describe('ProductsListComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+  // Esperar que el componente este creado
   it('should create', () => {
     expect(component).toBeTruthy();
   });

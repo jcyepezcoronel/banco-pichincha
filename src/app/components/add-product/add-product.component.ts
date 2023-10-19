@@ -105,4 +105,8 @@ export class AddProductComponent implements OnInit {
   public addDays(date: any, days: any) {
     return new Date(date.valueOf() + days * 24 * 60 * 60 * 1000);
   }
+
+  backHome() {
+    this.router.navigateByUrl('/');
+  }
 }
