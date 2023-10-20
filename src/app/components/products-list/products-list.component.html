@@ -1,6 +1,6 @@
 <div class="products-container">
     <div class="search-input-container">
-        <input class="search-input" type="text" [(ngModel)]="searchText" (change)="filterProducts()"
+        <input class="search-input" type="text" [(ngModel)]="searchText" (ngModelChange)="filterProducts()"
             placeholder="Search...">
         <Button class="btn primary" (click)="addProduct()">+ Agregar</Button>
     </div>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 
 import { IProduct } from 'src/app/interfaces/product.interface';
-import { Router } from '@angular/router';
+import { Router,ActivatedRouteSnapshot  } from '@angular/router';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
@@ -37,16 +38,10 @@ export class ProductsListComponent implements OnInit {
   }
   //Filtramos los productos
   filterProducts() {
-    this.productsFilter = this.productsList
-      .filter((product) =>
-        product.name.toLowerCase().includes(this.searchText.toLowerCase())
-      )
-      .filter((product) =>
-        product.description
-          .toLowerCase()
-          .includes(this.searchText.toLowerCase())
-      );
-    this.changeQuantity();
+    this.productsFilter = this.productsList.filter(product => {
+      return (product.name.toLowerCase().includes(this.searchText.toLowerCase()) || product.description.includes(this.searchText.toLowerCase()));
+    });
+    if(this.searchText.length == 0) this.changeQuantity()
   }
   //Funcion para desplegar dropdown de editar y eliminar
   toggleDropdown(indicator: any) {
@@ -55,7 +50,8 @@ export class ProductsListComponent implements OnInit {
   }
   //Funcion para redigir a la vista de editar producto
   editProduct(product: IProduct) {
-    this.router.navigate(['addProduct'], { state: product });
+    const queryParams:  IProduct  = product;
+    this.router.navigate(['addProduct'], { queryParams });
   }
   //Abrir modal
   openModal(product: IProduct) {

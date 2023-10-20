@@ -1,86 +1,79 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProductComponent } from './add-product.component';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductService } from 'src/app/services/product.service';
+import { DatePipe } from '@angular/common';
+import { Router,ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AddProductComponent', () => {
-  let component: AddProductComponent;
   let fixture: ComponentFixture<AddProductComponent>;
-  let formBuilder: FormBuilder;
+  let component: AddProductComponent;
+  let productServiceStub: any;
+  let routerStub: any;
+  let router: Router;
+  let fb : FormBuilder;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    productServiceStub = {
+      sendProducts: jest.fn(() => Promise.resolve()),
+      editProducts: jest.fn(() => Promise.resolve()),
+    };
+    
+    TestBed.configureTestingModule({
+      imports:[ReactiveFormsModule, FormsModule,RouterTestingModule.withRoutes([])],
       declarations: [AddProductComponent],
-      imports: [ReactiveFormsModule, HttpClientTestingModule],
-      providers: [FormBuilder, ProductService],
-    }).compileComponents();
-
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        { provide: ProductService, useValue: productServiceStub },
+        Router,
+        FormBuilder,
+      ],
+    })
     fixture = TestBed.createComponent(AddProductComponent);
+    router = TestBed.get(Router);
     component = fixture.componentInstance;
-    formBuilder = fixture.debugElement.injector.get(FormBuilder);
     fixture.detectChanges();
   });
-  // Esperar que el componente este creado
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  // valida que los datos iniciales en el formulario sean correctos
+  it('should have a valid register form', () => {
+    expect(component.registerForm.valid).toBeFalsy();
 
-  it('should initialize the form with the correct initial values', () => {
-    const form = formBuilder.group({
-      id: [''],
-      name: [''],
-      description: [''],
-      logo: [''],
-      date_release: [''],
-      date_revision: [''],
-    });
-    component.registerForm = form;
-    expect(component.registerForm.get('id')!.value).toBe('');
-    expect(component.registerForm.get('name')!.value).toBe('');
-    expect(component.registerForm.get('description')!.value).toBe('');
-    expect(component.registerForm.get('logo')!.value).toBe('');
-    expect(component.registerForm.get('date_release')!.value).toBe('');
-    expect(component.registerForm.get('date_revision')!.value).toBe('');
+    component.registerForm.controls['id'].setValue('1234567890');
+    component.registerForm.controls['name'].setValue('Test Product');
+    component.registerForm.controls['description'].setValue('This is a test product');
+    component.registerForm.controls['logo'].setValue('https://example.com/logo.png');
+    component.registerForm.controls['date_release'].setValue('2023-10-19');
+    component.registerForm.controls['date_revision'].setValue('2024-10-19');
+
+    expect(component.registerForm.valid).toBeTruthy();
   });
 
-  // Valida que el boton haya sido tocado
-  it('should validate the form when the submit button is clicked', () => {
-    const form = formBuilder.group({
-      id: [''],
-      name: [''],
-      description: [''],
-      logo: [''],
-      date_release: [''],
-      date_revision: [''],
-    });
-    component.registerForm = form;
+  it('should call the product service when submitting the form', () => {
+    const productService = TestBed.inject(ProductService);
+    const spy = jest.spyOn(productService, 'sendProducts');
 
-    fixture.detectChanges();
     component.sendForm();
 
-    expect(component.registerForm.invalid).toBe(true);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(component.registerForm.value);
   });
 
-  // Valida que el formulario sea ralmente valido
-  it('should set the form as valid when all fields are valid', () => {
-    const form = formBuilder.group({
-      id: ['trj-crd'],
-      name: ['Tarjetas de credito'],
-      description: ['tarjeta de consumo'],
-      logo: ['logo route'],
-      date_release: ['2023-02-01'],
-      date_revision: ['2024-02-01'],
-    });
-    component.registerForm = form;
+  it('should call the product service when editing the form', () => {
+    const productService = TestBed.inject(ProductService);
+    const spy = jest.spyOn(productService, 'editProducts');
 
-    fixture.detectChanges();
-    component.sendForm();
+    component.editForm();
 
-    expect(component.registerForm.valid).toBe(true);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(component.registerForm.value);
   });
 });

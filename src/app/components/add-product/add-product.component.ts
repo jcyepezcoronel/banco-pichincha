@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -20,11 +20,10 @@ export class AddProductComponent implements OnInit {
     fb: FormBuilder,
     private readonly productService: ProductService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
-    this.state = this.router.getCurrentNavigation()?.extras.state;
-    console.log('state', this.state);
-
+    this.state = this.activatedRoute.snapshot.queryParams;
     this.registerForm = fb.group({
       id: new FormControl('', [
         Validators.required,
@@ -72,7 +71,6 @@ export class AddProductComponent implements OnInit {
   sendForm() {
     if (this.registerForm) {
       this.productService.sendProducts(this.registerForm.value).subscribe();
-      console.log(this.registerForm.value.date_revision);
       this.router.navigateByUrl('/');
     }
   }

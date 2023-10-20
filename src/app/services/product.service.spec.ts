@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductService } from './product.service';
 import { HttpClient } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
 
 const httpClientMock = {
   get: jest.fn(),
@@ -34,11 +35,12 @@ describe('ProductService', () => {
   });
 
   //   Verificacion de la lista de producto
-
-  it('getProducts return ProductsList', () => {
-    service.getProducts();
-
-    expect(httpClientMock.get).toHaveBeenCalled();
+  describe('getProducts', () => {
+    it('should return ProductsList', () => {
+        const spy = jest.spyOn(httpClientMock, 'get').mockReturnValue(of(productsListMock));
+        service.getProducts();
+        expect(spy).toHaveBeenCalled(); 
+    });
   });
 
   //   Valida que el servicio haya sido creado
